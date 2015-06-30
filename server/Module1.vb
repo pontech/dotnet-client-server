@@ -100,6 +100,11 @@ Module Module1
                     dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom)
                     dataFromClient = _
                         dataFromClient.Substring(0, dataFromClient.IndexOf("$"))
+                    dataFromClient = ParceMessage(dataFromClient)
+                    If dataFromClient.ToLower = "exit" Then
+                        clientsList.Remove(clNo)
+                        Exit For
+                    End If
                     msg("From client - " + clNo + " : " + dataFromClient)
                     rCount = Convert.ToString(requestCount)
 
@@ -109,6 +114,14 @@ Module Module1
                 End Try
             Next
         End Sub
+
+        Private Function ParceMessage(ByVal message As String) As String
+            Dim response As String = message
+            If message.ToLower = "test" Then
+                response = Now.ToShortDateString
+            End If
+            Return response
+        End Function
 
     End Class
 End Module

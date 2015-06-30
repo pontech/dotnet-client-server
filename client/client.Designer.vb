@@ -19,12 +19,12 @@ Partial Class client
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.TextBox1 = New System.Windows.Forms.TextBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.TextBox2 = New System.Windows.Forms.TextBox
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.TextBox3 = New System.Windows.Forms.TextBox
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'Button1
@@ -78,7 +78,7 @@ Partial Class client
         Me.TextBox3.TabIndex = 5
         Me.TextBox3.Text = "Cow Boy"
         '
-        'Form1
+        'client
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -89,7 +89,7 @@ Partial Class client
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button1)
-        Me.Name = "Form1"
+        Me.Name = "client"
         Me.Text = "Form1"
         Me.ResumeLayout(False)
         Me.PerformLayout()

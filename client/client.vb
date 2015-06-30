@@ -36,6 +36,7 @@ Public Class client
         serverStream.Flush()
 
         Dim ctThread As Threading.Thread = New Threading.Thread(AddressOf getMessage)
+        ctThread.IsBackground = True
         ctThread.Start()
     End Sub
 
@@ -52,5 +53,9 @@ Public Class client
             readData = "" + returndata
             msg()
         Next
+    End Sub
+
+    Private Sub client_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        clientSocket.Close()
     End Sub
 End Class
