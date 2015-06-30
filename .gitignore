@@ -1,4 +1,10 @@
 /server/bin
 /server/obj
 /server/*.suo
+/email/email/bin
+/email/email/obj
 /email/*.suo
+/client/bin
+/client/obj
+/client/*.suo
+/client/*.user

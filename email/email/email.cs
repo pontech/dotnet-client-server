@@ -8,6 +8,12 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net.Mail;
 
+// Server Name	SMTP Address	    Port	SSL
+// ----------------------------------------------
+// Yahoo!	    smtp.mail.yahoo.com	587	    Yes
+// GMail	    smtp.gmail.com	    587	    Yes
+// Hotmail	    smtp.live.com	    587	    Yes
+
 namespace email
 {
     public partial class email : Form
