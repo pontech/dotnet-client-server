@@ -22,7 +22,7 @@ Public Class Client
         End Try
     End Sub
 
-    Public Sub connect(ByVal Hostname As String, ByVal Port As Integer)
+    Public Sub Connect(ByVal Hostname As String, ByVal Port As Integer)
         If clientSocket.Connected = False Then
             RaiseEvent MessageRecieved("Connected to Chat Server ...")
 
@@ -35,7 +35,7 @@ Public Class Client
         End If
     End Sub
 
-    Public Function connected() As Boolean
+    Public Function Connected() As Boolean
         Return clientSocket.Connected()
     End Function
 

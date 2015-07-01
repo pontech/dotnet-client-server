@@ -41,8 +41,8 @@ Public Class ClientTerminal
     End Sub
 
     Private Sub ConnectButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConnectButton.Click
-        If client.connected = False Then
-            client.connect("127.0.0.1", 8888)
+        If client.Connected = False Then
+            client.Connect("127.0.0.1", 8888)
         Else
             MsgBox("All ready connected")
         End If
