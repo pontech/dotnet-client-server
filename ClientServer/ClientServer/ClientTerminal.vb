@@ -1,7 +1,7 @@
 Imports System.Net.Sockets
 Imports System.Text
 
-Public Class client
+Public Class ClientTerminal
     Dim WithEvents client_instance As New ClientClass()
     Dim readData As String
 
