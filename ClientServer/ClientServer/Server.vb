@@ -118,9 +118,9 @@ Public Class Server
                         RaiseEvent clientLeft(clName)
                         Exit While
                     End If
+                    broadcast(dataFromClient, clName, True)
                     RaiseEvent recievedMessage(dataFromClient, clName)
 
-                    broadcast(dataFromClient, clName, True)
                 End If
                 System.Threading.Thread.Sleep(100)
             Catch ex As Exception
