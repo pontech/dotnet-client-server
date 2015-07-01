@@ -44,13 +44,21 @@ Public Class Client
             Dim inStream(10024) As Byte
             Dim buffSize As Integer
             Dim numberOfBytesRead As Integer
+            Dim recieved As String = ""
+            Dim message As String
 
             buffSize = clientSocket.ReceiveBufferSize
             While (Not die)
                 If serverStream.DataAvailable() Then
                     numberOfBytesRead = serverStream.Read(inStream, 0, buffSize)
-                    Dim returndata As String = System.Text.Encoding.ASCII.GetString(inStream, 0, numberOfBytesRead)
-                    RaiseEvent MessageRecieved("" + returndata)
+                    recieved += System.Text.Encoding.ASCII.GetString(inStream, 0, numberOfBytesRead)
+                End If
+                Dim index As Integer
+                index = recieved.IndexOf(Delimiter)
+                If index <> -1 Then
+                    message = recieved.Substring(0, recieved.IndexOf(Delimiter))
+                    recieved = recieved.Substring(recieved.IndexOf(Delimiter) + 1)
+                    RaiseEvent MessageRecieved(message)
                 End If
                 System.Threading.Thread.Sleep(10)
             End While

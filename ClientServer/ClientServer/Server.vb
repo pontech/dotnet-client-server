@@ -72,29 +72,29 @@ Public Class Server
     End Sub
     Public Sub responseHandler(ByVal msg As String, ByVal uName As String, ByVal flag As Boolean)
         If broadcastResponse Then
-        Dim Item As DictionaryEntry
-        For Each Item In clientsList
-            Dim broadcastSocket As TcpClient
-            broadcastSocket = CType(Item.Value, TcpClient)
-            Dim broadcastStream As NetworkStream = broadcastSocket.GetStream()
-            Dim broadcastBytes As [Byte]()
+            Dim Item As DictionaryEntry
+            For Each Item In clientsList
+                Dim broadcastSocket As TcpClient
+                broadcastSocket = CType(Item.Value, TcpClient)
+                Dim broadcastStream As NetworkStream = broadcastSocket.GetStream()
+                Dim broadcastBytes As [Byte]()
 
-            If flag = True Then
-                broadcastBytes = Encoding.ASCII.GetBytes(uName + " says : " + msg)
-            Else
-                broadcastBytes = Encoding.ASCII.GetBytes(msg)
-            End If
+                If flag = True Then
+                    broadcastBytes = Encoding.ASCII.GetBytes(uName + " says : " + msg + Delimiter)
+                Else
+                    broadcastBytes = Encoding.ASCII.GetBytes(msg + Delimiter)
+                End If
 
-            broadcastStream.Write(broadcastBytes, 0, broadcastBytes.Length)
-            broadcastStream.Flush()
-        Next
+                broadcastStream.Write(broadcastBytes, 0, broadcastBytes.Length)
+                broadcastStream.Flush()
+            Next
         Else
             Dim responseSocket As TcpClient
             responseSocket = CType(clientsList(uName), TcpClient)
             Dim responseStream As NetworkStream = responseSocket.GetStream()
             Dim responseBytes As [Byte]()
 
-            responseBytes = Encoding.ASCII.GetBytes(msg)
+            responseBytes = Encoding.ASCII.GetBytes(msg + Delimiter)
 
             responseStream.Write(responseBytes, 0, responseBytes.Length)
             responseStream.Flush()
