@@ -5,7 +5,6 @@ Public Class Client
 
     Dim clientSocket As New TcpClient()
     Dim serverStream As NetworkStream
-    Dim readData As String
 
     Dim clientThread As Threading.Thread
     Dim die As Boolean = False
