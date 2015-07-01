@@ -20,11 +20,11 @@ Public Class Client
         RaiseEvent MessageRecieved(readData)
     End Sub
 
-    Public Sub connect(ByVal ChatName As String)
+    Public Sub connect(ByVal IP As String, ByVal Port As Integer, ByVal ChatName As String)
         readData = "Connected to Chat Server ..."
         msg()
 
-        clientSocket.Connect("127.0.0.1", 8888)
+        clientSocket.Connect(IP, Port)
         serverStream = clientSocket.GetStream()
 
         ctThread = New Threading.Thread(AddressOf getMessage)

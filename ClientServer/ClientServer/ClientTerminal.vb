@@ -30,7 +30,7 @@ Public Class ClientTerminal
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        client.connect(ChatName.Text)
+        client.connect("127.0.0.1", 8888, ChatName.Text)
     End Sub
 
     Private Sub client_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
