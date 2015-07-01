@@ -29,6 +29,7 @@ Partial Class ClientTerminal
         '
         'SendMessageButton
         '
+        Me.SendMessageButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SendMessageButton.Location = New System.Drawing.Point(148, 218)
         Me.SendMessageButton.Name = "SendMessageButton"
         Me.SendMessageButton.Size = New System.Drawing.Size(107, 25)
@@ -38,6 +39,9 @@ Partial Class ClientTerminal
         '
         'Terminal
         '
+        Me.Terminal.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Terminal.Location = New System.Drawing.Point(12, 63)
         Me.Terminal.Multiline = True
         Me.Terminal.Name = "Terminal"
@@ -56,6 +60,8 @@ Partial Class ClientTerminal
         '
         'Command
         '
+        Me.Command.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Command.Location = New System.Drawing.Point(12, 188)
         Me.Command.Multiline = True
         Me.Command.Name = "Command"
