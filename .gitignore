@@ -8,3 +8,6 @@
 /client/obj
 /client/*.suo
 /client/*.user
+/ClientServer/ClientServer/bin
+/ClientServer/ClientServer/obj
+/ClientServer/*.suo
