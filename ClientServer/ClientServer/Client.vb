@@ -1,7 +1,8 @@
-Imports System.Net.Sockets
-Imports System.Text
+﻿Imports System.Net.Sockets
 
-Public Class client
+Public Class Client
+    Event MessageRecieved(ByVal Message As String)
+
     Dim clientSocket As New System.Net.Sockets.TcpClient()
     Dim serverStream As NetworkStream
     Dim readData As String
@@ -9,42 +10,30 @@ Public Class client
     Dim ctThread As Threading.Thread
     Dim die As Boolean = False
 
-    Private Sub SendMessageButton_Click(sender As Object, e As EventArgs) Handles SendMessageButton.Click
-        Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(Command.Text + "$")
+    Public Sub Send(ByVal Message)
+        Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(Message + "$")
         serverStream.Write(outStream, 0, outStream.Length)
         serverStream.Flush()
     End Sub
 
-    Private Sub Command_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Command.KeyPress
-        If e.KeyChar = vbCr Then
-            SendMessageButton_Click(sender, Nothing)
-            e.Handled = True
-        End If
-    End Sub
-
     Private Sub msg()
-        If Me.InvokeRequired Then
-            Me.Invoke(New MethodInvoker(AddressOf msg))
-        Else
-            Terminal.Text = Terminal.Text + Environment.NewLine + " >> " + readData
-        End If
+        RaiseEvent MessageRecieved(readData)
     End Sub
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+    Public Sub connect(ByVal IP As String, ByVal Port As Integer, ByVal ChatName As String)
         readData = "Connected to Chat Server ..."
         msg()
-        clientSocket.Connect("127.0.0.1", 8888)
-        'Label1.Text = "Client Socket Program - Server Connected ..."
+
+        clientSocket.Connect(IP, Port)
         serverStream = clientSocket.GetStream()
 
         ctThread = New Threading.Thread(AddressOf getMessage)
         ctThread.IsBackground = True
         ctThread.Start()
 
-        Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(ChatName.Text + "$")
+        Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(ChatName + "$")
         serverStream.Write(outStream, 0, outStream.Length)
         serverStream.Flush()
-
     End Sub
 
     Private Sub getMessage()
@@ -67,7 +56,7 @@ Public Class client
         End Try
     End Sub
 
-    Private Sub client_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+    Public Sub Close()
         'die = True
         ctThread.Abort()
         While ctThread.IsAlive()

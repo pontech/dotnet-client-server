@@ -70,12 +70,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="client.designer.vb">
-      <DependentUpon>client.vb</DependentUpon>
+    <Compile Include="ClientTerminal.designer.vb">
+      <DependentUpon>ClientTerminal.vb</DependentUpon>
     </Compile>
-    <Compile Include="client.vb">
+    <Compile Include="ClientTerminal.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Client.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -107,8 +108,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="client.resx">
-      <DependentUpon>client.vb</DependentUpon>
+    <EmbeddedResource Include="ClientTerminal.resx">
+      <DependentUpon>ClientTerminal.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
