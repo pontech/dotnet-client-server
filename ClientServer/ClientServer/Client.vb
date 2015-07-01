@@ -20,11 +20,11 @@ Public Class Client
         End Try
     End Sub
 
-    Public Sub connect(ByVal IP As String, ByVal Port As Integer)
+    Public Sub connect(ByVal Hostname As String, ByVal Port As Integer)
         If clientSocket.Connected = False Then
             RaiseEvent MessageRecieved("Connected to Chat Server ...")
 
-            clientSocket.Connect(IP, Port)
+            clientSocket.Connect(Hostname, Port)
             serverStream = clientSocket.GetStream()
 
             clientThread = New Threading.Thread(AddressOf getMessage)
