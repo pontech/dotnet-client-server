@@ -65,15 +65,15 @@ Public Class Server
                 If CloseServer Then
                     Exit While
                 End If
-                'System.Threading.Thread.Sleep(1)
+                System.Threading.Thread.Sleep(10)
             End While
         Catch ex As Exception
         End Try
     End Sub
     Public Sub responseHandler(ByVal msg As String, ByVal uName As String, ByVal flag As Boolean)
-        If broadcastResponse Then
-            Dim Item As DictionaryEntry
-            For Each Item In clientsList
+        Dim Item As DictionaryEntry
+        For Each Item In clientsList
+            If broadcastResponse = True Or Item.Key = uName Then
                 Dim broadcastSocket As TcpClient
                 broadcastSocket = CType(Item.Value, TcpClient)
                 Dim broadcastStream As NetworkStream = broadcastSocket.GetStream()
@@ -87,18 +87,8 @@ Public Class Server
 
                 broadcastStream.Write(broadcastBytes, 0, broadcastBytes.Length)
                 broadcastStream.Flush()
-            Next
-        Else
-            Dim responseSocket As TcpClient
-            responseSocket = CType(clientsList(uName), TcpClient)
-            Dim responseStream As NetworkStream = responseSocket.GetStream()
-            Dim responseBytes As [Byte]()
-
-            responseBytes = Encoding.ASCII.GetBytes(msg + Delimiter)
-
-            responseStream.Write(responseBytes, 0, responseBytes.Length)
-            responseStream.Flush()
-        End If
+            End If
+        Next
     End Sub
 
     Public Class handleClientData
