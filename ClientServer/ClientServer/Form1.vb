@@ -6,10 +6,7 @@
     End Sub
 
     Private Sub btnServer_Click(sender As Object, e As EventArgs) Handles btnServer.Click
-        If IsNothing(clsServer) Then
-            Dim addr() As Byte = {127, 0, 0, 1}
-            'Dim addr() As Byte = {192, 168, 168, 151} '192.168.168.151
-            clsServer = New Server(New System.Net.IPAddress(addr), 8888)
-        End If
+        Dim frmServer As New ServerWindow()
+        frmServer.Show()
     End Sub
 End Class

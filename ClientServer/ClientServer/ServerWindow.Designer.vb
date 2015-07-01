@@ -22,17 +22,21 @@ Partial Class ServerWindow
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.tbAddress = New System.Windows.Forms.TextBox()
         Me.Terminal = New System.Windows.Forms.TextBox()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnStart = New System.Windows.Forms.Button()
+        Me.tbPort = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
-        'TextBox1
+        'tbAddress
         '
-        Me.TextBox1.Location = New System.Drawing.Point(12, 304)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox1.TabIndex = 0
+        Me.tbAddress.Location = New System.Drawing.Point(12, 304)
+        Me.tbAddress.Name = "tbAddress"
+        Me.tbAddress.Size = New System.Drawing.Size(100, 20)
+        Me.tbAddress.TabIndex = 0
+        Me.tbAddress.Text = "127.0.0.1"
         '
         'Terminal
         '
@@ -42,30 +46,62 @@ Partial Class ServerWindow
         Me.Terminal.Size = New System.Drawing.Size(459, 257)
         Me.Terminal.TabIndex = 2
         '
-        'Button1
+        'btnStart
         '
-        Me.Button1.Location = New System.Drawing.Point(346, 276)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 3
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.btnStart.Location = New System.Drawing.Point(263, 304)
+        Me.btnStart.Name = "btnStart"
+        Me.btnStart.Size = New System.Drawing.Size(75, 23)
+        Me.btnStart.TabIndex = 3
+        Me.btnStart.Text = "Start"
+        Me.btnStart.UseVisualStyleBackColor = True
+        '
+        'tbPort
+        '
+        Me.tbPort.Location = New System.Drawing.Point(147, 304)
+        Me.tbPort.Name = "tbPort"
+        Me.tbPort.Size = New System.Drawing.Size(100, 20)
+        Me.tbPort.TabIndex = 4
+        Me.tbPort.Text = "8888"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(13, 285)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(55, 13)
+        Me.Label1.TabIndex = 5
+        Me.Label1.Text = "IPAddress"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(144, 285)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(26, 13)
+        Me.Label2.TabIndex = 6
+        Me.Label2.Text = "Port"
         '
         'ServerWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(483, 336)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.tbPort)
+        Me.Controls.Add(Me.btnStart)
         Me.Controls.Add(Me.Terminal)
-        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.tbAddress)
         Me.Name = "ServerWindow"
         Me.Text = "ServerWindow"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents tbAddress As System.Windows.Forms.TextBox
     Friend WithEvents Terminal As System.Windows.Forms.TextBox
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnStart As System.Windows.Forms.Button
+    Friend WithEvents tbPort As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
 End Class
