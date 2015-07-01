@@ -2,11 +2,11 @@ Imports System.Net.Sockets
 Imports System.Text
 
 Public Class ClientTerminal
-    Dim WithEvents client_instance As New ClientClass()
+    Dim WithEvents client As New Client()
     Dim readData As String
 
     Private Sub SendMessageButton_Click(sender As Object, e As EventArgs) Handles SendMessageButton.Click
-        client_instance.Send(Command.Text)
+        client.Send(Command.Text)
     End Sub
 
     Private Sub Command_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Command.KeyPress
@@ -16,7 +16,7 @@ Public Class ClientTerminal
         End If
     End Sub
 
-    Private Sub MessageRecieved(ByVal Message) Handles client_instance.MessageRecieved
+    Private Sub MessageRecieved(ByVal Message) Handles client.MessageRecieved
         readData = Message
         msg()
     End Sub
@@ -30,11 +30,11 @@ Public Class ClientTerminal
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        client_instance.connect(ChatName.Text)
+        client.connect(ChatName.Text)
     End Sub
 
     Private Sub client_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
-        client_instance.Close()
+        client.Close()
     End Sub
 
 End Class

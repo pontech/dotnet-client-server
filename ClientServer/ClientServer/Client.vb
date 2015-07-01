@@ -1,6 +1,6 @@
 ﻿Imports System.Net.Sockets
 
-Public Class ClientClass
+Public Class Client
     Event MessageRecieved(ByVal Message As String)
 
     Dim clientSocket As New System.Net.Sockets.TcpClient()
