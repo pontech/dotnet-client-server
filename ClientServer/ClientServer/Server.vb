@@ -37,64 +37,64 @@ Public Class Server
 
     Private Sub HandleNewClients()
         Try
-        While True
-            Dim clientSocket As TcpClient
+            While True
+                Dim clientSocket As TcpClient
                 If serverSocket.Pending Then
-            clientSocket = serverSocket.AcceptTcpClient()
-            Dim bytesFrom(10024) As Byte
-            Dim dataFromClient As String
+                    clientSocket = serverSocket.AcceptTcpClient()
+                    Dim bytesFrom(10024) As Byte
+                    Dim dataFromClient As String
 
-            Dim networkStream As NetworkStream = clientSocket.GetStream()
-            networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
-            dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom)
-            dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf(Delimiter))
+                    Dim networkStream As NetworkStream = clientSocket.GetStream()
+                    networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
+                    dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom)
+                    dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf(Delimiter))
 
-            clientsList(dataFromClient) = clientSocket
+                    clientsList(dataFromClient) = clientSocket
 
                     responseHandler(dataFromClient + " Joined ", dataFromClient, False)
                     RaiseEvent clientJoined(dataFromClient)
-            'msg(dataFromClient + " Joined chat room ")
+                    'msg(dataFromClient + " Joined chat room ")
                     Dim HandleClientThread As New Thread(AddressOf handleClient)
-            HandleClientThread.IsBackground = True
-            HandleClientThread.Name = "HandleClientThread"
-            Dim parameters As New handleClientData()
-            parameters.clientSocket = clientSocket
-            parameters.clName = dataFromClient
-            HandleClientThread.Start(parameters)
+                    HandleClientThread.IsBackground = True
+                    HandleClientThread.Name = "HandleClientThread"
+                    Dim parameters As New handleClientData()
+                    parameters.clientSocket = clientSocket
+                    parameters.clName = dataFromClient
+                    HandleClientThread.Start(parameters)
                 End If
                 If CloseServer Then
                     Exit While
                 End If
                 'System.Threading.Thread.Sleep(1)
-        End While
+            End While
         Catch ex As Exception
         End Try
     End Sub
     Public Sub responseHandler(ByVal msg As String, ByVal uName As String, ByVal flag As Boolean)
         If broadcastResponse Then
-        Dim Item As DictionaryEntry
-        For Each Item In clientsList
-            Dim broadcastSocket As TcpClient
-            broadcastSocket = CType(Item.Value, TcpClient)
-            Dim broadcastStream As NetworkStream = broadcastSocket.GetStream()
-            Dim broadcastBytes As [Byte]()
+            Dim Item As DictionaryEntry
+            For Each Item In clientsList
+                Dim broadcastSocket As TcpClient
+                broadcastSocket = CType(Item.Value, TcpClient)
+                Dim broadcastStream As NetworkStream = broadcastSocket.GetStream()
+                Dim broadcastBytes As [Byte]()
 
-            If flag = True Then
-                broadcastBytes = Encoding.ASCII.GetBytes(uName + " says : " + msg)
-            Else
-                broadcastBytes = Encoding.ASCII.GetBytes(msg)
-            End If
+                If flag = True Then
+                    broadcastBytes = Encoding.ASCII.GetBytes(uName + " says : " + msg + Delimiter)
+                Else
+                    broadcastBytes = Encoding.ASCII.GetBytes(msg + Delimiter)
+                End If
 
-            broadcastStream.Write(broadcastBytes, 0, broadcastBytes.Length)
-            broadcastStream.Flush()
-        Next
+                broadcastStream.Write(broadcastBytes, 0, broadcastBytes.Length)
+                broadcastStream.Flush()
+            Next
         Else
             Dim responseSocket As TcpClient
             responseSocket = CType(clientsList(uName), TcpClient)
             Dim responseStream As NetworkStream = responseSocket.GetStream()
             Dim responseBytes As [Byte]()
 
-            responseBytes = Encoding.ASCII.GetBytes(msg)
+            responseBytes = Encoding.ASCII.GetBytes(msg + Delimiter)
 
             responseStream.Write(responseBytes, 0, responseBytes.Length)
             responseStream.Flush()
@@ -111,7 +111,8 @@ Public Class Server
         Dim clName As String = CType(clientdata, handleClientData).clName
 
         Dim bytesFrom(10024) As Byte
-        Dim dataFromClient As String
+        Dim dataFromClient As String = ""
+        Dim dataForOthers As String = ""
         Dim networkStream As NetworkStream = clientSocket.GetStream()
         Dim numberOfBytesRead As Integer
         While True
@@ -124,21 +125,21 @@ Public Class Server
             Try
                 If networkStream.DataAvailable Then
                     numberOfBytesRead = networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
-                    dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom, 0, numberOfBytesRead)
-
-                    'networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
-                    'dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom)
-                    dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf(Delimiter))
-                    If dataFromClient.ToLower = "exit" Then
-                        clientsList.Remove(clName)
-                        RaiseEvent clientLeft(clName)
-                        Exit While
-                    End If
-                    If broadcastResponse Then
-                        responseHandler(dataFromClient, clName, True)
-                    End If
-                    RaiseEvent recievedMessage(dataFromClient, clName)
-
+                    dataFromClient += System.Text.Encoding.ASCII.GetString(bytesFrom, 0, numberOfBytesRead)
+                    Do
+                        Dim delimpos As Integer = dataFromClient.IndexOf(Delimiter)
+                        dataForOthers = dataFromClient.Substring(0, If(delimpos < 0, 0, delimpos)).Trim()
+                        dataFromClient = dataFromClient.Substring(delimpos + 1)
+                        If dataForOthers.ToLower = "exit" Then
+                            clientsList.Remove(clName)
+                            RaiseEvent clientLeft(clName)
+                            Exit While
+                        End If
+                        If broadcastResponse Then
+                            responseHandler(dataForOthers, clName, True)
+                        End If
+                        RaiseEvent recievedMessage(dataForOthers, clName)
+                    Loop While dataForOthers <> ""
                 End If
                 System.Threading.Thread.Sleep(100)
             Catch ex As Exception
