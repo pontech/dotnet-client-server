@@ -11,8 +11,10 @@ Public Class Server
     Public Event clientLeft(ByVal userName As String)
     Public Event clientJoined(ByVal userName As String)
     Private CloseServer As Boolean = False
+    Private broadcastResponse As Boolean
 
-    Public Sub New(ByVal Address As IPAddress, ByVal Port As Integer)
+    Public Sub New(ByVal Address As IPAddress, ByVal Port As Integer, ByVal broadcastResponse As Boolean)
+        Me.broadcastResponse = broadcastResponse
         'System.Net.NetworkInformation.IPAddressInformation
         serverSocket = New TcpListener(Address, Port)
         'serverSocket = New TcpListener(Port)
@@ -47,10 +49,10 @@ Public Class Server
 
                     clientsList(dataFromClient) = clientSocket
 
-                    broadcast(dataFromClient + " Joined ", dataFromClient, False)
+                    responseHandler(dataFromClient + " Joined ", dataFromClient, False)
                     RaiseEvent clientJoined(dataFromClient)
                     'msg(dataFromClient + " Joined chat room ")
-                    Dim HandleClientThread As New Thread(AddressOf handleClientNew)
+                    Dim HandleClientThread As New Thread(AddressOf handleClient)
                     HandleClientThread.IsBackground = True
                     HandleClientThread.Name = "HandleClientThread"
                     Dim parameters As New handleClientData()
@@ -66,23 +68,35 @@ Public Class Server
         Catch ex As Exception
         End Try
     End Sub
-    Public Sub broadcast(ByVal msg As String, ByVal uName As String, ByVal flag As Boolean)
-        Dim Item As DictionaryEntry
-        For Each Item In clientsList
-            Dim broadcastSocket As TcpClient
-            broadcastSocket = CType(Item.Value, TcpClient)
-            Dim broadcastStream As NetworkStream = broadcastSocket.GetStream()
-            Dim broadcastBytes As [Byte]()
+    Public Sub responseHandler(ByVal msg As String, ByVal uName As String, ByVal flag As Boolean)
+        If broadcastResponse Then
+            Dim Item As DictionaryEntry
+            For Each Item In clientsList
+                Dim broadcastSocket As TcpClient
+                broadcastSocket = CType(Item.Value, TcpClient)
+                Dim broadcastStream As NetworkStream = broadcastSocket.GetStream()
+                Dim broadcastBytes As [Byte]()
 
-            If flag = True Then
-                broadcastBytes = Encoding.ASCII.GetBytes(uName + " says : " + msg)
-            Else
-                broadcastBytes = Encoding.ASCII.GetBytes(msg)
-            End If
+                If flag = True Then
+                    broadcastBytes = Encoding.ASCII.GetBytes(uName + " says : " + msg)
+                Else
+                    broadcastBytes = Encoding.ASCII.GetBytes(msg)
+                End If
 
-            broadcastStream.Write(broadcastBytes, 0, broadcastBytes.Length)
-            broadcastStream.Flush()
-        Next
+                broadcastStream.Write(broadcastBytes, 0, broadcastBytes.Length)
+                broadcastStream.Flush()
+            Next
+        Else
+            Dim responseSocket As TcpClient
+            responseSocket = CType(clientsList(uName), TcpClient)
+            Dim responseStream As NetworkStream = responseSocket.GetStream()
+            Dim responseBytes As [Byte]()
+
+            responseBytes = Encoding.ASCII.GetBytes(msg)
+
+            responseStream.Write(responseBytes, 0, responseBytes.Length)
+            responseStream.Flush()
+        End If
     End Sub
 
     Public Class handleClientData
@@ -90,7 +104,7 @@ Public Class Server
         Public clName As String
     End Class
 
-    Public Sub handleClientNew(ByVal clientdata As Object)
+    Public Sub handleClient(ByVal clientdata As Object)
         Dim clientSocket As TcpClient = CType(clientdata, handleClientData).clientSocket
         Dim clName As String = CType(clientdata, handleClientData).clName
 
@@ -118,7 +132,9 @@ Public Class Server
                         RaiseEvent clientLeft(clName)
                         Exit While
                     End If
-                    broadcast(dataFromClient, clName, True)
+                    If broadcastResponse Then
+                        responseHandler(dataFromClient, clName, True)
+                    End If
                     RaiseEvent recievedMessage(dataFromClient, clName)
 
                 End If

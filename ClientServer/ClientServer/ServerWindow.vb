@@ -8,7 +8,7 @@
             For i As Integer = 0 To addr.Length - 1
                 addr(i) = Byte.Parse(chunks(i))
             Next
-            clsServer = New Server(New System.Net.IPAddress(addr), Integer.Parse(tbPort.Text))
+            clsServer = New Server(New System.Net.IPAddress(addr), Integer.Parse(tbPort.Text), cbBroadcast.Checked)
         Else
             btnStart.Text = "Start"
             clsServer.ExitServer()
@@ -27,7 +27,7 @@
 
     Private Sub parseMessage(ByVal message As String, ByVal name As String)
         If message.ToLower = "time" Then
-            clsServer.broadcast(Now.TimeOfDay.ToString(), "Server", True)
+            clsServer.responseHandler(Now.TimeOfDay.ToString(), name, True)
         End If
     End Sub
 
