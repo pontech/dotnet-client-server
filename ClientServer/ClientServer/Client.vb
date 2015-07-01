@@ -3,7 +3,7 @@
 Public Class Client
     Event MessageRecieved(ByVal Message As String)
 
-    Dim clientSocket As New System.Net.Sockets.TcpClient()
+    Dim clientSocket As New TcpClient()
     Dim serverStream As NetworkStream
     Dim readData As String
 
@@ -11,19 +11,21 @@ Public Class Client
     Dim die As Boolean = False
 
     Public Sub Send(ByVal Message)
-        Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(Message + "$")
-        serverStream.Write(outStream, 0, outStream.Length)
-        serverStream.Flush()
+        Try
+            Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(Message + "$")
+            serverStream.Write(outStream, 0, outStream.Length)
+            serverStream.Flush()
+        Catch ex As Exception
+            Console.WriteLine("Send Exception: " + ex.Message)
+        End Try
     End Sub
 
-    Public Sub connect(ByVal IP As String, ByVal Port As Integer, ByVal ChatName As String)
+    Public Sub connect(ByVal IP As String, ByVal Port As Integer)
         If clientSocket.Connected = False Then
             RaiseEvent MessageRecieved("Connected to Chat Server ...")
 
             clientSocket.Connect(IP, Port)
             serverStream = clientSocket.GetStream()
-
-            Send(ChatName)
 
             clientThread = New Threading.Thread(AddressOf getMessage)
             clientThread.IsBackground = True
@@ -40,7 +42,7 @@ Public Class Client
             Dim inStream(10024) As Byte
             Dim buffSize As Integer
             Dim numberOfBytesRead As Integer
-            serverStream = clientSocket.GetStream()
+
             buffSize = clientSocket.ReceiveBufferSize
             While (Not die)
                 If serverStream.DataAvailable() Then
@@ -48,8 +50,8 @@ Public Class Client
                     Dim returndata As String = System.Text.Encoding.ASCII.GetString(inStream, 0, numberOfBytesRead)
                     RaiseEvent MessageRecieved("" + returndata)
                 End If
+                System.Threading.Thread.Sleep(10)
             End While
-            System.Threading.Thread.Sleep(100)
         Catch ex As Exception
             Console.WriteLine("getMessage exception: " + ex.Message)
         End Try

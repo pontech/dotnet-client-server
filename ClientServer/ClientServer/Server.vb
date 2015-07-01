@@ -114,6 +114,7 @@ Public Class Server
 
                     broadcast(dataFromClient, clName, True)
                 End If
+                System.Threading.Thread.Sleep(100)
             Catch ex As Exception
                 MsgBox(ex.ToString)
             End Try
