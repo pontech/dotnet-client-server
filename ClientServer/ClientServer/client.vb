@@ -1,5 +1,6 @@
 Imports System.Net.Sockets
 Imports System.Text
+
 Public Class client
     Dim clientSocket As New System.Net.Sockets.TcpClient()
     Dim serverStream As NetworkStream
@@ -50,12 +51,13 @@ Public Class client
         Try
             Dim inStream(10024) As Byte
             Dim buffSize As Integer
+            Dim numberOfBytesRead As Integer
             While (Not die)
                 serverStream = clientSocket.GetStream()
                 buffSize = clientSocket.ReceiveBufferSize
                 If serverStream.DataAvailable() Then
-                    serverStream.Read(inStream, 0, buffSize)
-                    Dim returndata As String = System.Text.Encoding.ASCII.GetString(inStream)
+                    numberOfBytesRead = serverStream.Read(inStream, 0, buffSize)
+                    Dim returndata As String = System.Text.Encoding.ASCII.GetString(inStream, 0, numberOfBytesRead)
                     readData = "" + returndata
                     msg()
                 End If
