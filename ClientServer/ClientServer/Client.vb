@@ -7,7 +7,7 @@ Public Class Client
     Dim serverStream As NetworkStream
     Dim readData As String
 
-    Dim ctThread As Threading.Thread
+    Dim clientThread As Threading.Thread
     Dim die As Boolean = False
 
     Public Sub Send(ByVal Message)
@@ -16,23 +16,18 @@ Public Class Client
         serverStream.Flush()
     End Sub
 
-    Private Sub msg()
-        RaiseEvent MessageRecieved(readData)
-    End Sub
-
     Public Sub connect(ByVal IP As String, ByVal Port As Integer, ByVal ChatName As String)
         If clientSocket.Connected = False Then
-            readData = "Connected to Chat Server ..."
-            msg()
+            RaiseEvent MessageRecieved("Connected to Chat Server ...")
 
             clientSocket.Connect(IP, Port)
             serverStream = clientSocket.GetStream()
 
-            ctThread = New Threading.Thread(AddressOf getMessage)
-            ctThread.IsBackground = True
-            ctThread.Start()
-
             Send(ChatName)
+
+            clientThread = New Threading.Thread(AddressOf getMessage)
+            clientThread.IsBackground = True
+            clientThread.Start()
         End If
     End Sub
 
@@ -45,16 +40,16 @@ Public Class Client
             Dim inStream(10024) As Byte
             Dim buffSize As Integer
             Dim numberOfBytesRead As Integer
+            serverStream = clientSocket.GetStream()
+            buffSize = clientSocket.ReceiveBufferSize
             While (Not die)
-                serverStream = clientSocket.GetStream()
-                buffSize = clientSocket.ReceiveBufferSize
                 If serverStream.DataAvailable() Then
                     numberOfBytesRead = serverStream.Read(inStream, 0, buffSize)
                     Dim returndata As String = System.Text.Encoding.ASCII.GetString(inStream, 0, numberOfBytesRead)
-                    readData = "" + returndata
-                    msg()
+                    RaiseEvent MessageRecieved("" + returndata)
                 End If
             End While
+            System.Threading.Thread.Sleep(100)
         Catch ex As Exception
             Console.WriteLine("getMessage exception: " + ex.Message)
         End Try
@@ -62,8 +57,8 @@ Public Class Client
 
     Public Sub Close()
         'die = True
-        ctThread.Abort()
-        While ctThread.IsAlive()
+        clientThread.Abort()
+        While clientThread.IsAlive()
             Application.DoEvents()
         End While
 
