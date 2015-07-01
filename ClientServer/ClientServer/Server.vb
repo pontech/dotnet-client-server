@@ -10,7 +10,9 @@ Public Class Server
     Dim Delimiter As String = vbCr
 
     Public Event recievedMessage(ByVal message As String, ByVal userName As String)
-    Public CloseServer As Boolean = False
+    Public Event clientLeft(ByVal userName As String)
+    Public Event clientJoined(ByVal userName As String)
+    Private CloseServer As Boolean = False
 
     Public Sub New(ByVal Address As IPAddress, ByVal Port As Integer)
         'System.Net.NetworkInformation.IPAddressInformation
@@ -32,8 +34,10 @@ Public Class Server
     End Sub
 
     Private Sub HandleNewClients()
+        Try
         While True
             Dim clientSocket As TcpClient
+                If serverSocket.Pending Then
             clientSocket = serverSocket.AcceptTcpClient()
             Dim bytesFrom(10024) As Byte
             Dim dataFromClient As String
@@ -46,7 +50,7 @@ Public Class Server
             clientsList(dataFromClient) = clientSocket
 
             broadcast(dataFromClient + " Joined ", dataFromClient, False)
-
+                    RaiseEvent clientJoined(dataFromClient)
             'msg(dataFromClient + " Joined chat room ")
             Dim HandleClientThread As New Thread(AddressOf handleClientNew)
             HandleClientThread.IsBackground = True
@@ -55,7 +59,14 @@ Public Class Server
             parameters.clientSocket = clientSocket
             parameters.clName = dataFromClient
             HandleClientThread.Start(parameters)
+                End If
+                If CloseServer Then
+                    Exit While
+                End If
+                'System.Threading.Thread.Sleep(1)
         End While
+        Catch ex As Exception
+        End Try
     End Sub
     Public Sub broadcast(ByVal msg As String, ByVal uName As String, ByVal flag As Boolean)
         Dim Item As DictionaryEntry
@@ -81,17 +92,6 @@ Public Class Server
         Public clName As String
     End Class
 
-    Private Function ParceMessage(ByVal message As String) As String
-        Dim response As String = message
-        If message.ToLower = "time" Then
-            response = Now.ToShortDateString
-        End If
-        If message.ToLower = "exitserver" Then
-            ExitServer()
-        End If
-        Return response
-    End Function
-
     Public Sub handleClientNew(ByVal clientdata As Object)
         Dim clientSocket As TcpClient = CType(clientdata, handleClientData).clientSocket
         Dim clName As String = CType(clientdata, handleClientData).clName
@@ -99,27 +99,36 @@ Public Class Server
         Dim bytesFrom(10024) As Byte
         Dim dataFromClient As String
         Dim networkStream As NetworkStream = clientSocket.GetStream()
+        Dim numberOfBytesRead As Integer
         While True
             If CloseServer Then
                 Exit While
             End If
+            If Not clientSocket.Connected Then
+                Exit While
+            End If
             Try
                 If networkStream.DataAvailable Then
-                    networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
-                    dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom)
+                    numberOfBytesRead = networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
+                    dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom, 0, numberOfBytesRead)
+
+                    'networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
+                    'dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom)
                     dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf(Delimiter))
-                    dataFromClient = ParceMessage(dataFromClient)
                     If dataFromClient.ToLower = "exit" Then
                         clientsList.Remove(clName)
+                        RaiseEvent clientLeft(clName)
                         Exit While
                     End If
-
                     broadcast(dataFromClient, clName, True)
+                    RaiseEvent recievedMessage(dataFromClient, clName)
+
                 End If
                 System.Threading.Thread.Sleep(100)
             Catch ex As Exception
                 MsgBox(ex.ToString)
             End Try
+            'System.Threading.Thread.Sleep(1)
         End While
         clientSocket.Close()
     End Sub
