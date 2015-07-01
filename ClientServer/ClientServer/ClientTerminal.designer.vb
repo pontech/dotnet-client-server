@@ -41,6 +41,7 @@ Partial Class ClientTerminal
         Me.Terminal.Location = New System.Drawing.Point(12, 63)
         Me.Terminal.Multiline = True
         Me.Terminal.Name = "Terminal"
+        Me.Terminal.ScrollBars = System.Windows.Forms.ScrollBars.Both
         Me.Terminal.Size = New System.Drawing.Size(243, 119)
         Me.Terminal.TabIndex = 1
         '
@@ -78,7 +79,7 @@ Partial Class ClientTerminal
         Me.ChatName.TabIndex = 5
         Me.ChatName.Text = "Cow Boy"
         '
-        'client
+        'ClientTerminal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -89,7 +90,7 @@ Partial Class ClientTerminal
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Terminal)
         Me.Controls.Add(Me.SendMessageButton)
-        Me.Name = "client"
+        Me.Name = "ClientTerminal"
         Me.Text = "Command Client"
         Me.ResumeLayout(False)
         Me.PerformLayout()

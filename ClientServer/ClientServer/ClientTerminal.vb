@@ -3,7 +3,6 @@ Imports System.Text
 
 Public Class ClientTerminal
     Dim WithEvents client As New Client()
-    Dim readData As String
 
     Private Sub SendMessageButton_Click(sender As Object, e As EventArgs) Handles SendMessageButton.Click
         client.Send(Command.Text)
@@ -16,16 +15,17 @@ Public Class ClientTerminal
         End If
     End Sub
 
-    Private Sub MessageRecieved(ByVal Message) Handles client.MessageRecieved
-        readData = Message
-        msg()
+    Private Sub MessageRecieved(ByVal Message As String) Handles client.MessageRecieved
+        SetText(Message)
     End Sub
 
-    Private Sub msg()
+    Delegate Sub SetTextCallback([text] As String)
+    Private Sub SetText(Message As String)
         If Me.InvokeRequired Then
-            Me.Invoke(New MethodInvoker(AddressOf msg))
+            Dim d As New SetTextCallback(AddressOf SetText)
+            Me.Invoke(d, New Object() {Message})
         Else
-            Terminal.Text = Terminal.Text + Environment.NewLine + " >> " + readData
+            Terminal.AppendText(Environment.NewLine + " >> " + Message)
         End If
     End Sub
 
