@@ -128,17 +128,19 @@ Public Class Server
                     dataFromClient += System.Text.Encoding.ASCII.GetString(bytesFrom, 0, numberOfBytesRead)
                     Do
                         Dim delimpos As Integer = dataFromClient.IndexOf(Delimiter)
-                        dataForOthers = dataFromClient.Substring(0, If(delimpos < 0, 0, delimpos)).Trim()
+                        dataForOthers = dataFromClient.Substring(0, If(delimpos < 0, 0, delimpos))
                         dataFromClient = dataFromClient.Substring(delimpos + 1)
-                        If dataForOthers.ToLower = "exit" Then
-                            clientsList.Remove(clName)
-                            RaiseEvent clientLeft(clName)
-                            Exit While
+                        If dataForOthers <> "" Then
+                            If dataForOthers.ToLower = "exit" Then
+                                clientsList.Remove(clName)
+                                RaiseEvent clientLeft(clName)
+                                Exit While
+                            End If
+                            If broadcastResponse Then
+                                responseHandler(dataForOthers, clName, True)
+                            End If
+                            RaiseEvent recievedMessage(dataForOthers, clName)
                         End If
-                        If broadcastResponse Then
-                            responseHandler(dataForOthers, clName, True)
-                        End If
-                        RaiseEvent recievedMessage(dataForOthers, clName)
                     Loop While dataForOthers <> ""
                 End If
                 System.Threading.Thread.Sleep(100)
