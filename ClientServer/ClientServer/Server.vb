@@ -7,6 +7,8 @@ Public Class Server
     Public serverSocket As TcpListener
     Dim clientsList As New Hashtable
     Dim HandleNewClientsThread As Thread
+    Dim Delimiter As String = vbCr
+
     Public Event recievedMessage(ByVal message As String, ByVal userName As String)
     Public CloseServer As Boolean = False
 
@@ -39,7 +41,7 @@ Public Class Server
             Dim networkStream As NetworkStream = clientSocket.GetStream()
             networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
             dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom)
-            dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf("$"))
+            dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf(Delimiter))
 
             clientsList(dataFromClient) = clientSocket
 
@@ -105,7 +107,7 @@ Public Class Server
                 If networkStream.DataAvailable Then
                     networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
                     dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom)
-                    dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf("$"))
+                    dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf(Delimiter))
                     dataFromClient = ParceMessage(dataFromClient)
                     If dataFromClient.ToLower = "exit" Then
                         clientsList.Remove(clName)

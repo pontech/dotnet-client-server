@@ -10,9 +10,11 @@ Public Class Client
     Dim clientThread As Threading.Thread
     Dim die As Boolean = False
 
+    Dim Delimiter As String = vbCr
+
     Public Sub Send(ByVal Message)
         Try
-            Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(Message + "$")
+            Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(Message + Delimiter)
             serverStream.Write(outStream, 0, outStream.Length)
             serverStream.Flush()
         Catch ex As Exception
