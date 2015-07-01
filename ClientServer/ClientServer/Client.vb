@@ -21,20 +21,24 @@ Public Class Client
     End Sub
 
     Public Sub connect(ByVal IP As String, ByVal Port As Integer, ByVal ChatName As String)
-        readData = "Connected to Chat Server ..."
-        msg()
+        If clientSocket.Connected = False Then
+            readData = "Connected to Chat Server ..."
+            msg()
 
-        clientSocket.Connect(IP, Port)
-        serverStream = clientSocket.GetStream()
+            clientSocket.Connect(IP, Port)
+            serverStream = clientSocket.GetStream()
 
-        ctThread = New Threading.Thread(AddressOf getMessage)
-        ctThread.IsBackground = True
-        ctThread.Start()
+            ctThread = New Threading.Thread(AddressOf getMessage)
+            ctThread.IsBackground = True
+            ctThread.Start()
 
-        Dim outStream As Byte() = System.Text.Encoding.ASCII.GetBytes(ChatName + "$")
-        serverStream.Write(outStream, 0, outStream.Length)
-        serverStream.Flush()
+            Send(ChatName)
+        End If
     End Sub
+
+    Public Function connected() As Boolean
+        Return clientSocket.Connected()
+    End Function
 
     Private Sub getMessage()
         Try

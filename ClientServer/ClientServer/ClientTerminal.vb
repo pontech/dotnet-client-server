@@ -2,7 +2,15 @@ Imports System.Net.Sockets
 Imports System.Text
 
 Public Class ClientTerminal
-    Dim WithEvents client As New Client()
+    Dim WithEvents client As Client
+
+    Public Sub New(ByRef client As Client)
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Me.client = client
+    End Sub
 
     Private Sub SendMessageButton_Click(sender As Object, e As EventArgs) Handles SendMessageButton.Click
         client.Send(Command.Text)
@@ -29,8 +37,12 @@ Public Class ClientTerminal
         End If
     End Sub
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        client.connect("127.0.0.1", 8888, ChatName.Text)
+    Private Sub ConnectButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConnectButton.Click
+        If client.connected = False Then
+            client.connect("127.0.0.1", 8888, ChatName.Text)
+        Else
+            MsgBox("All ready connected")
+        End If
     End Sub
 
     Private Sub client_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
