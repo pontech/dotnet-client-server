@@ -23,7 +23,7 @@ Partial Class ClientTerminal
         Me.Terminal = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Command = New System.Windows.Forms.TextBox()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.ConnectButton = New System.Windows.Forms.Button()
         Me.ChatName = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
@@ -62,14 +62,14 @@ Partial Class ClientTerminal
         Me.Command.Size = New System.Drawing.Size(243, 24)
         Me.Command.TabIndex = 3
         '
-        'Button2
+        'ConnectButton
         '
-        Me.Button2.Location = New System.Drawing.Point(132, 34)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(123, 23)
-        Me.Button2.TabIndex = 4
-        Me.Button2.Text = "Connect to Server"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.ConnectButton.Location = New System.Drawing.Point(132, 34)
+        Me.ConnectButton.Name = "ConnectButton"
+        Me.ConnectButton.Size = New System.Drawing.Size(123, 23)
+        Me.ConnectButton.TabIndex = 4
+        Me.ConnectButton.Text = "Connect to Server"
+        Me.ConnectButton.UseVisualStyleBackColor = True
         '
         'ChatName
         '
@@ -85,7 +85,7 @@ Partial Class ClientTerminal
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(268, 251)
         Me.Controls.Add(Me.ChatName)
-        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.ConnectButton)
         Me.Controls.Add(Me.Command)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Terminal)
@@ -100,7 +100,7 @@ Partial Class ClientTerminal
     Friend WithEvents Terminal As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Command As System.Windows.Forms.TextBox
-    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents ConnectButton As System.Windows.Forms.Button
     Friend WithEvents ChatName As System.Windows.Forms.TextBox
 
 End Class
