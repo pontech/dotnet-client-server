@@ -22,7 +22,7 @@ Partial Class client
         Me.Button1 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.CommandTextBox = New System.Windows.Forms.TextBox()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
@@ -53,13 +53,13 @@ Partial Class client
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "Enter your chat name :"
         '
-        'TextBox2
+        'CommandTextBox
         '
-        Me.TextBox2.Location = New System.Drawing.Point(12, 188)
-        Me.TextBox2.Multiline = True
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(243, 24)
-        Me.TextBox2.TabIndex = 3
+        Me.CommandTextBox.Location = New System.Drawing.Point(12, 188)
+        Me.CommandTextBox.Multiline = True
+        Me.CommandTextBox.Name = "CommandTextBox"
+        Me.CommandTextBox.Size = New System.Drawing.Size(243, 24)
+        Me.CommandTextBox.TabIndex = 3
         '
         'Button2
         '
@@ -85,12 +85,12 @@ Partial Class client
         Me.ClientSize = New System.Drawing.Size(268, 251)
         Me.Controls.Add(Me.TextBox3)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.TextBox2)
+        Me.Controls.Add(Me.CommandTextBox)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button1)
         Me.Name = "client"
-        Me.Text = "Form1"
+        Me.Text = "Command Client"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -98,7 +98,7 @@ Partial Class client
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents CommandTextBox As System.Windows.Forms.TextBox
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
 
