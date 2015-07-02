@@ -14,7 +14,15 @@ Public Class ClientTerminal
     End Sub
 
     Private Sub SendMessageButton_Click(sender As Object, e As EventArgs) Handles SendMessageButton.Click
-        client.Send(Command.Text)
+
+        If client.Asynchronous = True Then
+            client.Send(Command.Text)
+        Else
+            Dim Message As String = ""
+            Message = client.SendReceive(Command.Text)
+            SetText(Message)
+        End If
+
     End Sub
 
     Private Sub Command_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Command.KeyPress
@@ -42,7 +50,7 @@ Public Class ClientTerminal
 
     Private Sub ConnectButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConnectButton.Click
         If client.Connected = False Then
-            client.Connect("127.0.0.1", 8888)
+            client.Connect("127.0.0.1", 8888, False)
         Else
             MsgBox("All ready connected")
         End If

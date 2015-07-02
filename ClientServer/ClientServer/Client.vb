@@ -8,8 +8,9 @@ Public Class Client
 
     Dim clientThread As Threading.Thread
     Dim die As Boolean = False
-
     Dim Delimiter As String = vbCr
+
+    Public Asynchronous As Boolean = False
 
     Public Sub Send(ByVal Message)
         Try
@@ -21,16 +22,38 @@ Public Class Client
         End Try
     End Sub
 
-    Public Sub Connect(ByVal Hostname As String, ByVal Port As Integer)
+    Public Function SendReceive(Message As String) As String
+        Dim incomming As String = Nothing
+        Try
+            If Asynchronous = False Then
+                ReceiveFlush()
+                Send(Message)
+                incomming = Receive()
+            Else
+                Send(Message)
+                incomming = "This function should not be used with asynchronous client operation"
+            End If
+
+        Catch ex As Exception
+            Console.WriteLine("Send Exception: " + ex.Message)
+        End Try
+        Return incomming
+    End Function
+
+    Public Sub Connect(ByVal Hostname As String, ByVal Port As Integer, ByVal Asynchronous As Boolean)
         If clientSocket.Connected = False Then
+            Me.Asynchronous = Asynchronous
+
             RaiseEvent MessageRecieved("Connected to Chat Server ...")
 
             clientSocket.Connect(Hostname, Port)
             serverStream = clientSocket.GetStream()
 
-            clientThread = New Threading.Thread(AddressOf getMessage)
-            clientThread.IsBackground = True
-            clientThread.Start()
+            If Asynchronous = True Then
+                clientThread = New Threading.Thread(AddressOf ReceiveThread)
+                clientThread.IsBackground = True
+                clientThread.Start()
+            End If
         End If
     End Sub
 
@@ -38,31 +61,92 @@ Public Class Client
         Return clientSocket.Connected()
     End Function
 
-    Private Sub getMessage()
-        Try
-            Dim inStream(10024) As Byte
-            Dim buffSize As Integer
-            Dim numberOfBytesRead As Integer
-            Dim recieved As String = ""
-            Dim message As String
+    Private Function ReceiveAvailable() As String
+        Dim inStream As Byte() = New Byte(10024) {}
+        Dim buffSize As Integer = 0
+        Dim numberOfBytesRead As Integer = 0
+        Dim received As String = ""
 
+        If serverStream.DataAvailable Then
             buffSize = clientSocket.ReceiveBufferSize
-            While (Not die)
-                If serverStream.DataAvailable() Then
-                    numberOfBytesRead = serverStream.Read(inStream, 0, buffSize)
-                    recieved += System.Text.Encoding.ASCII.GetString(inStream, 0, numberOfBytesRead)
-                End If
-                Dim index As Integer
-                index = recieved.IndexOf(Delimiter)
-                If index <> -1 Then
-                    message = recieved.Substring(0, recieved.IndexOf(Delimiter))
-                    recieved = recieved.Substring(recieved.IndexOf(Delimiter) + 1)
-                    RaiseEvent MessageRecieved(message)
-                End If
+            numberOfBytesRead = serverStream.Read(inStream, 0, buffSize)
+            received += System.Text.Encoding.ASCII.GetString(inStream, 0, numberOfBytesRead)
+        End If
+
+        Return received
+    End Function
+
+    Private Function ParseMessage(ByRef received As String) As String
+        Dim message As String = Nothing
+
+        Dim index As Integer
+        index = received.IndexOf(Delimiter)
+        If index <> -1 Then
+            message = received.Substring(0, received.IndexOf(Delimiter))
+            received = received.Substring(received.IndexOf(Delimiter) + 1)
+        End If
+        Return message
+
+    End Function
+
+    Public Sub ReceiveFlush()
+        Try
+            While (serverStream.DataAvailable = True)
+                ReceiveAvailable()
                 System.Threading.Thread.Sleep(10)
             End While
         Catch ex As Exception
-            Console.WriteLine("getMessage exception: " + ex.Message)
+            Console.WriteLine("ReceiveFlush exception: " + ex.Message)
+        End Try
+    End Sub
+
+    Public Function Receive(Optional ByVal SleepTime_ms As Integer = 250) As String
+        Dim message As String = Nothing
+        Dim received As String = ""
+
+        Dim delta_ms As Integer
+
+        Dim start As DateTime = DateTime.Now
+        Dim time As New TimeSpan
+        time = Now - start
+
+        Try
+            Do
+                Application.DoEvents()
+                received += ReceiveAvailable()
+                message = ParseMessage(received)
+
+                If Not IsNothing(message) Then
+                    Return message
+                End If
+
+                time = Now - start
+                delta_ms = (time.Seconds * 1000) + time.Milliseconds
+            Loop While delta_ms < SleepTime_ms And IsNothing(message)
+
+        Catch ex As Exception
+            Console.WriteLine("Receive exception: " + ex.Message)
+        End Try
+        Return "timeout"
+    End Function
+
+    Private Sub ReceiveThread()
+        Try
+            Dim received As String = ""
+            Dim message As String
+
+            While (Not die)
+                received += ReceiveAvailable()
+                message = ParseMessage(received)
+
+                If Not IsNothing(message) Then
+                    RaiseEvent MessageRecieved(message)
+                End If
+
+                System.Threading.Thread.Sleep(10)
+            End While
+        Catch ex As Exception
+            Console.WriteLine("ReceiveThread exception: " + ex.Message)
         End Try
     End Sub
 

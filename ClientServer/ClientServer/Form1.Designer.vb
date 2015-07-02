@@ -24,6 +24,7 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.btnClient = New System.Windows.Forms.Button()
         Me.btnServer = New System.Windows.Forms.Button()
+        Me.AsynchronousReceive = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'btnClient
@@ -44,19 +45,32 @@ Partial Class Form1
         Me.btnServer.Text = "Open Server"
         Me.btnServer.UseVisualStyleBackColor = True
         '
+        'AsynchronousReceive
+        '
+        Me.AsynchronousReceive.AutoSize = True
+        Me.AsynchronousReceive.Location = New System.Drawing.Point(145, 17)
+        Me.AsynchronousReceive.Name = "AsynchronousReceive"
+        Me.AsynchronousReceive.Size = New System.Drawing.Size(136, 17)
+        Me.AsynchronousReceive.TabIndex = 2
+        Me.AsynchronousReceive.Text = "Asynchronous Receive"
+        Me.AsynchronousReceive.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(284, 262)
+        Me.Controls.Add(Me.AsynchronousReceive)
         Me.Controls.Add(Me.btnServer)
         Me.Controls.Add(Me.btnClient)
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents btnClient As System.Windows.Forms.Button
     Friend WithEvents btnServer As System.Windows.Forms.Button
+    Friend WithEvents AsynchronousReceive As System.Windows.Forms.CheckBox
 
 End Class
