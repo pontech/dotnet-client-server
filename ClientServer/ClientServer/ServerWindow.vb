@@ -41,4 +41,10 @@
         End If
     End Sub
 
+    Private Sub ServerWindow_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If btnStart.Text.ToLower <> "start" Then
+            btnStart.Text = "Start"
+            clsServer.ExitServer()
+        End If
+    End Sub
 End Class
