@@ -1,5 +1,17 @@
 ﻿Public Class ServerWindow
     Dim WithEvents clsServer As Server
+    Private parser_delegate As Parser
+
+    Delegate Sub Parser(ByRef server As Server, ByVal message As String, ByVal name As String)
+
+    Public Sub New(Optional ByVal parser As Parser = Nothing)
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Me.parser_delegate = parser
+    End Sub
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
         If btnStart.Text.ToLower = "start" Then
             btnStart.Text = "Stop"
@@ -22,7 +34,9 @@
     End Sub
     Private Sub clientMessage(ByVal message As String, ByVal name As String) Handles clsServer.recievedMessage
         SetText(name + " said " + message + vbCrLf)
+
         parseMessage(message, name)
+        parser_delegate.Invoke(clsServer, message, name)
     End Sub
 
     Private Sub parseMessage(ByVal message As String, ByVal name As String)

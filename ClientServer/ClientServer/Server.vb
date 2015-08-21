@@ -70,7 +70,7 @@ Public Class Server
         Catch ex As Exception
         End Try
     End Sub
-    Public Sub responseHandler(ByVal msg As String, ByVal uName As String, ByVal flag As Boolean)
+    Public Sub responseHandler(ByVal msg As String, ByVal uName As String, ByVal announce_name_in_response As Boolean)
         Dim Item As DictionaryEntry
         For Each Item In clientsList
             If broadcastResponse = True Or Item.Key = uName Then
@@ -79,7 +79,7 @@ Public Class Server
                 Dim broadcastStream As NetworkStream = broadcastSocket.GetStream()
                 Dim broadcastBytes As [Byte]()
 
-                If flag = True Then
+                If announce_name_in_response = True Then
                     broadcastBytes = Encoding.ASCII.GetBytes(uName + " says : " + msg + Delimiter)
                 Else
                     broadcastBytes = Encoding.ASCII.GetBytes(msg + Delimiter)
