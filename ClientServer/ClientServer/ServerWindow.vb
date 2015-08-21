@@ -36,7 +36,11 @@
         SetText(name + " said " + message + vbCrLf)
 
         parseMessage(message, name)
-        parser_delegate.Invoke(clsServer, message, name)
+        If Me.InvokeRequired Then
+            Me.Invoke(parser_delegate, New Object() {clsServer, message, name})
+        Else
+            parser_delegate.Invoke(clsServer, message, name)
+        End If
     End Sub
 
     Private Sub parseMessage(ByVal message As String, ByVal name As String)
