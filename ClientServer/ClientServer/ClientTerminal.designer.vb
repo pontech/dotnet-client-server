@@ -21,10 +21,8 @@ Partial Class ClientTerminal
     Private Sub InitializeComponent()
         Me.SendMessageButton = New System.Windows.Forms.Button()
         Me.Terminal = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.Command = New System.Windows.Forms.TextBox()
         Me.ConnectButton = New System.Windows.Forms.Button()
-        Me.ChatName = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'SendMessageButton
@@ -42,21 +40,12 @@ Partial Class ClientTerminal
         Me.Terminal.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Terminal.Location = New System.Drawing.Point(12, 63)
+        Me.Terminal.Location = New System.Drawing.Point(12, 12)
         Me.Terminal.Multiline = True
         Me.Terminal.Name = "Terminal"
         Me.Terminal.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.Terminal.Size = New System.Drawing.Size(243, 119)
+        Me.Terminal.Size = New System.Drawing.Size(243, 170)
         Me.Terminal.TabIndex = 1
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 9)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(114, 13)
-        Me.Label1.TabIndex = 2
-        Me.Label1.Text = "Enter your chat name :"
         '
         'Command
         '
@@ -70,30 +59,21 @@ Partial Class ClientTerminal
         '
         'ConnectButton
         '
-        Me.ConnectButton.Location = New System.Drawing.Point(132, 34)
+        Me.ConnectButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.ConnectButton.Location = New System.Drawing.Point(12, 219)
         Me.ConnectButton.Name = "ConnectButton"
         Me.ConnectButton.Size = New System.Drawing.Size(123, 23)
         Me.ConnectButton.TabIndex = 4
         Me.ConnectButton.Text = "Connect to Server"
         Me.ConnectButton.UseVisualStyleBackColor = True
         '
-        'ChatName
-        '
-        Me.ChatName.Location = New System.Drawing.Point(132, 6)
-        Me.ChatName.Name = "ChatName"
-        Me.ChatName.Size = New System.Drawing.Size(123, 20)
-        Me.ChatName.TabIndex = 5
-        Me.ChatName.Text = "Cow Boy"
-        '
         'ClientTerminal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(268, 251)
-        Me.Controls.Add(Me.ChatName)
         Me.Controls.Add(Me.ConnectButton)
         Me.Controls.Add(Me.Command)
-        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Terminal)
         Me.Controls.Add(Me.SendMessageButton)
         Me.Name = "ClientTerminal"
@@ -104,9 +84,7 @@ Partial Class ClientTerminal
     End Sub
     Friend WithEvents SendMessageButton As System.Windows.Forms.Button
     Friend WithEvents Terminal As System.Windows.Forms.TextBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Command As System.Windows.Forms.TextBox
     Friend WithEvents ConnectButton As System.Windows.Forms.Button
-    Friend WithEvents ChatName As System.Windows.Forms.TextBox
 
 End Class

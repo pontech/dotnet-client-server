@@ -10,7 +10,6 @@ Public Class ClientTerminal
 
         ' Add any initialization after the InitializeComponent() call.
         Me.client = client
-        Me.ChatName.Text = ChatName
     End Sub
 
     Private Sub SendMessageButton_Click(sender As Object, e As EventArgs) Handles SendMessageButton.Click
@@ -60,7 +59,4 @@ Public Class ClientTerminal
         client.Close()
     End Sub
 
-    Private Sub ClientTerminal_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        client.Send(ChatName.Text)
-    End Sub
 End Class

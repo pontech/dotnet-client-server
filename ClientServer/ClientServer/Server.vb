@@ -36,24 +36,21 @@ Public Class Server
     End Sub
 
     Private Sub HandleNewClients()
+        Static Dim client_count As Integer = 0
+        Dim dataFromClient As String
         Try
             While True
                 Dim clientSocket As TcpClient
                 If serverSocket.Pending Then
                     clientSocket = serverSocket.AcceptTcpClient()
                     Dim bytesFrom(10024) As Byte
-                    Dim dataFromClient As String
-
-                    Dim networkStream As NetworkStream = clientSocket.GetStream()
-                    networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
-                    dataFromClient = System.Text.Encoding.ASCII.GetString(bytesFrom)
-                    dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf(Delimiter))
-
+                    client_count += 1
+                    dataFromClient = "Client " + client_count.ToString()
                     clientsList(dataFromClient) = clientSocket
 
                     responseHandler(dataFromClient + " Joined ", dataFromClient, False)
                     RaiseEvent clientJoined(dataFromClient)
-                    'msg(dataFromClient + " Joined chat room ")
+
                     Dim HandleClientThread As New Thread(AddressOf handleClient)
                     HandleClientThread.IsBackground = True
                     HandleClientThread.Name = "HandleClientThread"
