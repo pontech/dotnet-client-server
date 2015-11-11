@@ -11,3 +11,6 @@
 /ClientServer/ClientServer/bin
 /ClientServer/ClientServer/obj
 /ClientServer/*.suo
+/public-ip/public-ip/obj
+/public-ip/public-ip/bin
+/public-ip/.vs/public-ip/v14/.suo
