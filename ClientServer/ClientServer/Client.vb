@@ -47,6 +47,10 @@ Public Class Client
             RaiseEvent MessageRecieved("Connected to Chat Server ...")
 
             clientSocket.Connect(Hostname, Port)
+            If clientSocket.ReceiveBufferSize > 8192 Then
+                clientSocket.ReceiveBufferSize = 8192
+                clientSocket.SendBufferSize = 8192
+            End If
             serverStream = clientSocket.GetStream()
 
             If Asynchronous = True Then
