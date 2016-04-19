@@ -8,7 +8,7 @@ Public Class Client
 
     Dim clientThread As Threading.Thread
     Dim die As Boolean = False
-    Dim Delimiter As String = vbCr
+    Dim Delimiter As String = vbLf
 
     Public Asynchronous As Boolean = False
 
@@ -156,12 +156,16 @@ Public Class Client
 
     Public Sub Close()
         'die = True
-        clientThread.Abort()
-        While clientThread.IsAlive()
-            Application.DoEvents()
-        End While
+        Try
+            clientThread.Abort()
+            While clientThread.IsAlive()
+                Application.DoEvents()
+            End While
 
-        clientSocket.Close()
+            clientSocket.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
     End Sub
 
 End Class

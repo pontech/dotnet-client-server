@@ -14,3 +14,5 @@
 /public-ip/public-ip/obj
 /public-ip/public-ip/bin
 /public-ip/.vs/public-ip/v14/.suo
+/ClientServer/.vs/ClientServer/v14/*.suo
+/client/.vs/client/v14/*.suo

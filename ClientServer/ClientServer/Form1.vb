@@ -5,7 +5,7 @@
         Dim client As New Client()
         Dim frmClient As New ClientTerminal(client, "Cute Girl" + count.ToString)
 
-        client.Connect("127.0.0.1", 8888, AsynchronousReceive.Checked)
+        client.Connect("192.168.0.100", 44300, AsynchronousReceive.Checked)
         frmClient.Show()
         count += 1
     End Sub
