@@ -111,7 +111,8 @@ Public Class Server
             End If
             Try
                 If networkStream.DataAvailable Then
-                    numberOfBytesRead = networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
+                    'numberOfBytesRead = networkStream.Read(bytesFrom, 0, CInt(clientSocket.ReceiveBufferSize))
+                    numberOfBytesRead = networkStream.Read(bytesFrom, 0, bytesFrom.Length)
                     dataFromClient += System.Text.Encoding.ASCII.GetString(bytesFrom, 0, numberOfBytesRead)
                     Do
                         Dim delimpos As Integer = dataFromClient.IndexOf(Delimiter)

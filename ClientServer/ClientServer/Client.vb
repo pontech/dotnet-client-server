@@ -69,7 +69,7 @@ Public Class Client
 
         If serverStream.DataAvailable Then
             buffSize = clientSocket.ReceiveBufferSize
-            numberOfBytesRead = serverStream.Read(inStream, 0, buffSize)
+            numberOfBytesRead = serverStream.Read(inStream, 0, inStream.Length())
             received += System.Text.Encoding.ASCII.GetString(inStream, 0, numberOfBytesRead)
         End If
 
