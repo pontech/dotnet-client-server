@@ -8,7 +8,7 @@ Public Class Client
 
     Dim clientThread As Threading.Thread
     Dim die As Boolean = False
-    Dim Delimiter As String = vbCr
+    Dim Delimiter As String = vbLf
 
     Public Asynchronous As Boolean = False
 
@@ -47,6 +47,10 @@ Public Class Client
             RaiseEvent MessageRecieved("Connected to Chat Server ...")
 
             clientSocket.Connect(Hostname, Port)
+            If clientSocket.ReceiveBufferSize > 8192 Then
+                clientSocket.ReceiveBufferSize = 8192
+                clientSocket.SendBufferSize = 8192
+            End If
             serverStream = clientSocket.GetStream()
 
             If Asynchronous = True Then
@@ -69,7 +73,7 @@ Public Class Client
 
         If serverStream.DataAvailable Then
             buffSize = clientSocket.ReceiveBufferSize
-            numberOfBytesRead = serverStream.Read(inStream, 0, inStream.Length())
+            numberOfBytesRead = serverStream.Read(inStream, 0, buffSize)
             received += System.Text.Encoding.ASCII.GetString(inStream, 0, numberOfBytesRead)
         End If
 
@@ -152,12 +156,16 @@ Public Class Client
 
     Public Sub Close()
         'die = True
-        clientThread.Abort()
-        While clientThread.IsAlive()
-            Application.DoEvents()
-        End While
+        Try
+            clientThread.Abort()
+            While clientThread.IsAlive()
+                Application.DoEvents()
+            End While
 
-        clientSocket.Close()
+            clientSocket.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
     End Sub
 
 End Class

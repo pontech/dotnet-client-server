@@ -47,7 +47,10 @@ Public Class Server
                     client_count += 1
                     dataFromClient = "Client " + client_count.ToString()
                     clientsList(dataFromClient) = clientSocket
-
+                    If clientSocket.ReceiveBufferSize > 8192 Then
+                        clientSocket.ReceiveBufferSize = 8192
+                        clientSocket.SendBufferSize = 8192
+                    End If
                     responseHandler(dataFromClient + " Joined ", dataFromClient, False)
                     RaiseEvent clientJoined(dataFromClient)
 
