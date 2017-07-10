@@ -51,6 +51,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -71,6 +72,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientServerUtil.vb" />
     <Compile Include="ClientTerminal.designer.vb">
       <DependentUpon>ClientTerminal.vb</DependentUpon>
     </Compile>

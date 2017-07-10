@@ -1,22 +1,32 @@
-﻿Public Class ServerWindow
+﻿'Imports System.Net.NetworkInformation.NetworkInterface
+'Imports System.Net.NetworkInformation.NetworkInterface
+
+Public Class ServerWindow
     Dim WithEvents clsServer As Server
     Private parser_delegate As Parser
+    Private broadcastResponseVisable As Boolean = False
 
     Delegate Sub Parser(ByRef server As Server, ByVal message As String, ByVal name As String)
 
-    Public Sub New(Optional ByVal parser As Parser = Nothing)
+    Public Sub New(Optional ByVal parser As Parser = Nothing, Optional ByVal broadcastResponseVisable As Boolean = False)
 
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
         Me.parser_delegate = parser
+        Me.broadcastResponseVisable = broadcastResponseVisable
+        'GetIPAddress()
+        ClientServerUtil.GetIPv4Address(cbAddress)
+    End Sub
+    Private Sub ServerWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        cbBroadcast.Visible = broadcastResponseVisable
     End Sub
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
         If btnStart.Text.ToLower = "start" Then
             btnStart.Text = "Stop"
             Dim addr() As Byte = {127, 0, 0, 1}
-            Dim chunks() As String = tbAddress.Text.Split(".")
+            Dim chunks() As String = cbAddress.Text.Split(".")
             For i As Integer = 0 To addr.Length - 1
                 addr(i) = Byte.Parse(chunks(i))
             Next

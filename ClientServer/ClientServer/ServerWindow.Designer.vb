@@ -22,22 +22,14 @@ Partial Class ServerWindow
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.tbAddress = New System.Windows.Forms.TextBox()
         Me.Terminal = New System.Windows.Forms.TextBox()
         Me.btnStart = New System.Windows.Forms.Button()
         Me.tbPort = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cbBroadcast = New System.Windows.Forms.CheckBox()
+        Me.cbAddress = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout()
-        '
-        'tbAddress
-        '
-        Me.tbAddress.Location = New System.Drawing.Point(12, 304)
-        Me.tbAddress.Name = "tbAddress"
-        Me.tbAddress.Size = New System.Drawing.Size(100, 20)
-        Me.tbAddress.TabIndex = 0
-        Me.tbAddress.Text = "127.0.0.1"
         '
         'Terminal
         '
@@ -92,29 +84,37 @@ Partial Class ServerWindow
         Me.cbBroadcast.Text = "Broadcast Responses"
         Me.cbBroadcast.UseVisualStyleBackColor = True
         '
+        'cbAddress
+        '
+        Me.cbAddress.FormattingEnabled = True
+        Me.cbAddress.Location = New System.Drawing.Point(12, 304)
+        Me.cbAddress.Name = "cbAddress"
+        Me.cbAddress.Size = New System.Drawing.Size(121, 21)
+        Me.cbAddress.TabIndex = 9
+        '
         'ServerWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(483, 336)
+        Me.Controls.Add(Me.cbAddress)
         Me.Controls.Add(Me.cbBroadcast)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.tbPort)
         Me.Controls.Add(Me.btnStart)
         Me.Controls.Add(Me.Terminal)
-        Me.Controls.Add(Me.tbAddress)
         Me.Name = "ServerWindow"
         Me.Text = "ServerWindow"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents tbAddress As System.Windows.Forms.TextBox
     Friend WithEvents Terminal As System.Windows.Forms.TextBox
     Friend WithEvents btnStart As System.Windows.Forms.Button
     Friend WithEvents tbPort As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents cbBroadcast As System.Windows.Forms.CheckBox
+    Friend WithEvents cbAddress As ComboBox
 End Class
