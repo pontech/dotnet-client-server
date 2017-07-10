@@ -46,10 +46,12 @@ Public Class ServerWindow
         SetText(name + " said " + message + vbCrLf)
 
         parseMessage(message, name)
-        If Me.InvokeRequired Then
-            Me.Invoke(parser_delegate, New Object() {clsServer, message, name})
-        Else
-            parser_delegate.Invoke(clsServer, message, name)
+        If Not IsNothing(parser_delegate) Then
+            If Me.InvokeRequired Then
+                Me.Invoke(parser_delegate, New Object() {clsServer, message, name})
+            Else
+                parser_delegate.Invoke(clsServer, message, name)
+            End If
         End If
     End Sub
 
