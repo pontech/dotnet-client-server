@@ -10,6 +10,8 @@ Public Class ClientTerminal
 
         ' Add any initialization after the InitializeComponent() call.
         Me.client = client
+
+        ClientServerUtil.GetIPv4Address(cbAddress)
     End Sub
 
     Private Sub SendMessageButton_Click(sender As Object, e As EventArgs) Handles SendMessageButton.Click
@@ -48,15 +50,22 @@ Public Class ClientTerminal
     End Sub
 
     Private Sub ConnectButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConnectButton.Click
-        If client.Connected = False Then
-            client.Connect("127.0.0.1", 8888, False)
-        Else
-            MsgBox("All ready connected")
-        End If
+        Try
+            If client.Connected = False Then
+                client.Connect(cbAddress.Text, Integer.Parse(tbPort.Text), False)
+            Else
+                MsgBox("All ready connected")
+            End If
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Sub
 
-    Private Sub client_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
-        client.Close()
+    Private Sub ClientTerminal_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        Try
+            client.Close()
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Sub
-
 End Class

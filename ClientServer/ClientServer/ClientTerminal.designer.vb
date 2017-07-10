@@ -23,12 +23,14 @@ Partial Class ClientTerminal
         Me.Terminal = New System.Windows.Forms.TextBox()
         Me.Command = New System.Windows.Forms.TextBox()
         Me.ConnectButton = New System.Windows.Forms.Button()
+        Me.cbAddress = New System.Windows.Forms.ComboBox()
+        Me.tbPort = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'SendMessageButton
         '
         Me.SendMessageButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SendMessageButton.Location = New System.Drawing.Point(148, 218)
+        Me.SendMessageButton.Location = New System.Drawing.Point(361, 218)
         Me.SendMessageButton.Name = "SendMessageButton"
         Me.SendMessageButton.Size = New System.Drawing.Size(107, 25)
         Me.SendMessageButton.TabIndex = 0
@@ -44,7 +46,7 @@ Partial Class ClientTerminal
         Me.Terminal.Multiline = True
         Me.Terminal.Name = "Terminal"
         Me.Terminal.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.Terminal.Size = New System.Drawing.Size(243, 170)
+        Me.Terminal.Size = New System.Drawing.Size(456, 170)
         Me.Terminal.TabIndex = 1
         '
         'Command
@@ -54,24 +56,42 @@ Partial Class ClientTerminal
         Me.Command.Location = New System.Drawing.Point(12, 188)
         Me.Command.Multiline = True
         Me.Command.Name = "Command"
-        Me.Command.Size = New System.Drawing.Size(243, 24)
+        Me.Command.Size = New System.Drawing.Size(456, 24)
         Me.Command.TabIndex = 3
         '
         'ConnectButton
         '
         Me.ConnectButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.ConnectButton.Location = New System.Drawing.Point(12, 219)
+        Me.ConnectButton.Location = New System.Drawing.Point(232, 219)
         Me.ConnectButton.Name = "ConnectButton"
         Me.ConnectButton.Size = New System.Drawing.Size(123, 23)
         Me.ConnectButton.TabIndex = 4
         Me.ConnectButton.Text = "Connect to Server"
         Me.ConnectButton.UseVisualStyleBackColor = True
         '
+        'cbAddress
+        '
+        Me.cbAddress.FormattingEnabled = True
+        Me.cbAddress.Location = New System.Drawing.Point(12, 221)
+        Me.cbAddress.Name = "cbAddress"
+        Me.cbAddress.Size = New System.Drawing.Size(121, 21)
+        Me.cbAddress.TabIndex = 5
+        '
+        'tbPort
+        '
+        Me.tbPort.Location = New System.Drawing.Point(139, 221)
+        Me.tbPort.Name = "tbPort"
+        Me.tbPort.Size = New System.Drawing.Size(87, 20)
+        Me.tbPort.TabIndex = 6
+        Me.tbPort.Text = "8888"
+        '
         'ClientTerminal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(268, 251)
+        Me.ClientSize = New System.Drawing.Size(481, 251)
+        Me.Controls.Add(Me.tbPort)
+        Me.Controls.Add(Me.cbAddress)
         Me.Controls.Add(Me.ConnectButton)
         Me.Controls.Add(Me.Command)
         Me.Controls.Add(Me.Terminal)
@@ -86,5 +106,6 @@ Partial Class ClientTerminal
     Friend WithEvents Terminal As System.Windows.Forms.TextBox
     Friend WithEvents Command As System.Windows.Forms.TextBox
     Friend WithEvents ConnectButton As System.Windows.Forms.Button
-
+    Friend WithEvents cbAddress As ComboBox
+    Friend WithEvents tbPort As TextBox
 End Class

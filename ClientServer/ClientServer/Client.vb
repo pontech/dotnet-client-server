@@ -152,10 +152,12 @@ Public Class Client
 
     Public Sub Close()
         'die = True
-        clientThread.Abort()
-        While clientThread.IsAlive()
-            Application.DoEvents()
-        End While
+        If Not IsNothing(clientThread) Then
+            clientThread.Abort()
+            While clientThread.IsAlive()
+                Application.DoEvents()
+            End While
+        End If
 
         clientSocket.Close()
     End Sub

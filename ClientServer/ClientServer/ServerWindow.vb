@@ -16,7 +16,7 @@ Public Class ServerWindow
         ' Add any initialization after the InitializeComponent() call.
         Me.parser_delegate = parser
         Me.broadcastResponseVisable = broadcastResponseVisable
-        'GetIPAddress()
+
         ClientServerUtil.GetIPv4Address(cbAddress)
     End Sub
     Private Sub ServerWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
